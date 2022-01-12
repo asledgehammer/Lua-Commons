@@ -7,7 +7,7 @@ require 'asledgehammer/class';
 -----------------------------------------------------------------
 -- @author Jab
 -----------------------------------------------------------------
-RainEffect = class(function(o)
+local RainEffect = class(function(o)
 
     o.pixels = nil;
     o.pixels_amount = 0;
@@ -23,6 +23,9 @@ RainEffect = class(function(o)
     o.dy = 0;
     o.dw = 0;
     o.dh = 0;
+
+    o.speed = 1.0;
+    o.alpha = 1.0;
 
     return o;
 
@@ -44,7 +47,7 @@ function RainEffect:render(main_screen)
         local pixel = self.pixels[index];
         local x = pixel.x;
         local y = pixel.y;
-        local l = pixel.length;
+        local l = pixel.length * self.speed;
  
         local r = 0.6;
         local g = 0.6;
@@ -71,7 +74,7 @@ function RainEffect:render(main_screen)
         if a < 0.2 then a = 0.2 end
         if a > 1   then a = 1   end
  
-        main_screen:drawLine2(x, y, x - l, y - l, a, r, g, b);
+        main_screen:drawLine2(x, y, x - l, y - l, a * self.alpha, r, g, b);
  
         if x >= sw + l or y >= sh + l then
  
@@ -155,17 +158,17 @@ end
 
 -----------------------------------------------------------------
 
-Events.OnResolutionChange.Add(function(ow, oh, nw, nh)
-    create_pixels(nw, nh);
-end);
 
-
-function addRainEffect() 
+function createRainEffect() 
     
     local effect = RainEffect();
 
-    addMainScreenRender(function(main_screen) 
+    addMainScreenRender(function(main_screen)
         effect:render(main_screen);
+    end);
+
+    Events.OnResolutionChange.Add(function(ow, oh, nw, nh)
+        effect:createPixels(nw, nh);
     end);
 
     return effect;
