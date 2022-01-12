@@ -34,4 +34,14 @@ function ease_in_quad(value) return value * value end
 -----------------------------------------------------------------
 function ease_out_quad(value) return value * (2 - value) end
 
+-- function ease_out_quint(value) return value end
+
+function ease_in_quint(x)
+  return x * x * x * x * x;
+end
+
+function ease_out_quint(value)
+  return 1 - Math.pow(1 - value, 5);
+end
+
 -----------------------------------------------------------------

@@ -163,10 +163,6 @@ function createRainEffect()
     
     local effect = RainEffect();
 
-    addMainScreenRender(function(main_screen)
-        effect:render(main_screen);
-    end);
-
     Events.OnResolutionChange.Add(function(ow, oh, nw, nh)
         effect:createPixels(nw, nh);
     end);
